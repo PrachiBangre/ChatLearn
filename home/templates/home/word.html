@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word of the Day</title>
+    <style>
+        /* Your CSS styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            text-align: center;
+        }
+        
+        .word, .definition {
+            margin-bottom: 20px;
+        }
+        
+        .word-label, .definition-label {
+            font-weight: bold;
+        }
+        
+        .word-box, .definition-box {
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            text-align: center;
+        }
+        
+        .word-text, .definition-text {
+            margin-top: 5px;
+        }
+        #back-button {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 9999;
+        }
+    </style>
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+</head>
+<body>
+    <button id="back-button" onclick="goBack()"><a href = "{%url 'home'%}">Back</a></button>
+    <div class="container">
+        <h1>Word of the Day</h1>
+        <div class="word">
+            <p class="word-label">Word:</p>
+            <p class="word-text">{{ word }}</p>
+        </div>
+        <div class="definition">
+            <p class="definition-label">Definition:</p>
+            <p class="definition-text">{{ definition }}</p>
+        </div>
+    </div>
+
+</body>
+</html>

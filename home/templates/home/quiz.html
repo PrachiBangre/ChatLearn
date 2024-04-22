@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+    <style>
+            * {
+                padding: 0;
+                margin: 0;
+                box-sizing: border-box;
+                font-family: "Poppins", sans-serif;
+            }
+            
+            body {
+                height: 100vh;
+                background: linear-gradient(184deg, #9d73fe, #a444f9);
+            }
+            
+            .start-screen,
+            .score-container {
+                position: absolute;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            button {
+                border: none;
+                outline: none;
+                cursor: pointer;
+            }
+            
+            #start-button,
+            #restart {
+                font-size: 1.3em;
+                padding: 0.5em 1.8em;
+                border-radius: 0.2em;
+                box-shadow: 0 20px 30px rgba(0, 0, 0, 0.4);
+            }
+            
+            #restart {
+                margin-top: 0.9em;
+            }
+            
+            #display-container {
+                background-color: #ffffff;
+                padding: 3.1em 1.8em;
+                width: 80%;
+                max-width: 37.5em;
+                margin: 0 auto;
+                position: absolute;
+                transform: translate(-50%, -50%);
+                top: 50%;
+                left: 50%;
+                border-radius: 0.6em;
+            }
+            
+            .header {
+                margin-bottom: 1.8em;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding-bottom: 0.6em;
+                border-bottom: 0.1em solid #c0bfd2;
+            }
+            
+            .timer-div {
+                background-color: #e1f5fe;
+                width: 7.5em;
+                border-radius: 1.8em;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0.7em 1.8em;
+            }
+            
+            .question {
+                margin-bottom: 1.25em;
+                font-weight: 600;
+            }
+            
+            .option-div {
+                font-size: 0.9em;
+                width: 100%;
+                padding: 1em;
+                margin: 0.3em 0;
+                text-align: left;
+                outline: none;
+                background: transparent;
+                border: 1px solid #c0bfd2;
+                border-radius: 0.3em;
+            }
+            
+            .option-div:disabled {
+                color: #000000;
+                cursor: not-allowed;
+            }
+            
+            #next-button {
+                font-size: 1em;
+                margin-top: 1.5em;
+                background-color: #8754ff;
+                color: #ffffff;
+                padding: 0.7em 1.8em;
+                border-radius: 0.3em;
+                float: right;
+                box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.3);
+            }
+            
+            .hide {
+                display: none;
+            }
+            
+            .incorrect {
+                background-color: #ffdde0;
+                color: #d32f2f;
+                border-color: #d32f2f;
+            }
+            
+            .correct {
+                background-color: #e7f6d5;
+                color: #689f38;
+                border-color: #689f38;
+            }
+            
+            #user-score {
+                font-size: 1.5em;
+                color: #ffffff;
+            }
+            #back-button {
+                position: absolute;
+                top: 15px;
+                left: 15px;
+                z-index: 9999;
+            }
+            
+            
+    </style>
+</head>
+<body>
+
+    <div class="start-screen">
+        <button id="start-button">Start</button>
+    </div>
+    <div id="display-container">
+        <div class="header">
+            <div class="number-of-count">
+                <span class="number-of-question">1 of 3 questions</span>
+            </div>
+            <div class="timer-div">
+                <img src="https://uxwing.com/wp-content/themes/uxwing/download/time-and-date/stopwatch-icon.png" width="20px" alt="stopwatch icon">
+                <span class="time-left">10s</span>
+            </div>
+        </div>
+        <div id="container">
+            <!-- questions and options will be displayed here -->
+        </div>
+        <button id="next-button">Next</button>
+    </div>
+    <div class="score-container hide">
+        <div id="user-score">Demo Score</div>
+        <button id="restart">Restart</button>
+    </div>
+    <button id="back-button" onclick="goBack()"><a href = "{%url 'home'%}">Back</a></button>
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+    <script > // References
+        const timeLeft = document.querySelector(".time-left");
+        const quizContainer = document.getElementById("container");
+        const nextBtn = document.getElementById("next-button");
+        const countOfQuestion = document.querySelector(".number-of-question");
+        const displayContainer = document.getElementById("display-container");
+        const scoreContainer = document.querySelector(".score-container");
+        const restart = document.getElementById("restart");
+        const userScore = document.getElementById("user-score");
+        const startScreen = document.querySelector(".start-screen");
+        const startButton = document.getElementById("start-button");
+        let questionCount;
+        let scoreCount = 0;
+        let count = 11;
+        let countdown;
+        
+        // Questions and Options array
+        const quizArray = [
+            {
+                id: "0",
+                question: "Some famous writers had to ____ school because of poverty.",
+                options: ["quit", "fire", "sack", "dismiss"],
+                correct: "quit",
+            },
+            {
+                id: "1",
+                question: "Extreme old age when a man behaves like a fool",
+                options: ["Imbecility", "Senility", "Dotage", "Superannuation"],
+                correct: "Dotage",
+            },
+            {
+                id: "2",
+                question: "The ___ you plant trees the ____ is your future.",
+                options: ["less, loss", "more, brighter", "much, bright", "many, more"],
+                correct: "more, brighter",
+            },
+            {
+                id: "3",
+                question: "There was a power failure, all the lights ___, but she had no candle.",
+                options: ["went back", "went away", "went on", "went out"],
+                correct: "went out",
+            },
+            {
+                id: "4",
+                question: "Choose the option that best describes the Idiom:“At a stretch”",
+                options: ["very carefully", "boldly", "with a long leap", "without stopping"],
+                correct: "without stopping",
+            },
+            {
+                id: "5",
+                question: "Give opposite gender for: ‘Colt’",
+                options: ["colty", "mare", "horse", "filly"],
+                correct: "filly",
+            },
+            {
+                id: "6",
+                question: "Which of the following is not a pair of homophones?",
+                options: ["knife-wife", "cereal-serial", "queue-cue", "knew-new"],
+                correct: "knife-wife",
+            },
+            {
+                id: "7",
+                question: "Which word has different meaning?",
+                options: ["paint", "touch", "colour", "whitewash"],
+                correct: "touch",
+            },
+            {
+                id: "8",
+                question: "Choose the correctly spelt word?",
+                options: ["Fascist", "Facict", "Facist", "Fasist"],
+                correct: "Fascist",
+            },
+            {
+                id: "9",
+                question: "After a decade, Calgary will be one of the most developed ____ cities in Canada",
+                options: ["Industrious", "Industry", "Industrial", "Industries"],
+                correct: "Industrial",
+            },
+            // Add more questions here...
+        ];
+        
+        // Restart Quiz
+        restart.addEventListener("click", () => {
+            initial();
+            timerDisplay(); // Restart the timer
+            displayContainer.classList.remove("hide");
+            scoreContainer.classList.add("hide");
+        });
+        
+        // Next Button
+        nextBtn.addEventListener("click", () => {
+            displayNext();
+        });
+        
+        // Timer
+        const timerDisplay = () => {
+            countdown = setInterval(() => {
+                count--;
+                timeLeft.innerHTML = count + "s";
+                if (count === 0) {
+                    clearInterval(countdown);
+                    displayNext();
+                }
+            }, 1000);
+        };
+        
+        // Display quiz
+        const quizDisplay = () => {
+            const currentQuestion = quizArray[questionCount];
+            countOfQuestion.textContent = `${questionCount + 1} of ${quizArray.length} Question`;
+            quizContainer.innerHTML = `
+                <p class="question">${currentQuestion.question}</p>
+                ${currentQuestion.options.map(option => `<button class="option-div" onclick="checker(this)">${option}</button>`).join('')}
+            `;
+        };
+        
+        // Checker Function to check if option is correct or not
+        function checker(userOption) {
+            const userSolution = userOption.innerText;
+            const currentQuestion = quizArray[questionCount];
+            const options = document.querySelectorAll(".option-div");
+        
+            if (userSolution === currentQuestion.correct) {
+                userOption.classList.add("correct");
+                scoreCount++;
+            } else {
+                userOption.classList.add("incorrect");
+                options.forEach(option => {
+                    if (option.innerText === currentQuestion.correct) {
+                        option.classList.add("correct");
+                    }
+                });
+            }
+        
+            clearInterval(countdown);
+            options.forEach(option => {
+                option.disabled = true;
+            });
+        }
+        
+        // Display next question or score
+        const displayNext = () => {
+            questionCount++;
+            if (questionCount === quizArray.length) {
+                displayContainer.classList.add("hide");
+                scoreContainer.classList.remove("hide");
+                userScore.textContent = `Your score is ${scoreCount} out of ${quizArray.length}`;
+            } else {
+                quizDisplay();
+                count = 11;
+                clearInterval(countdown);
+                timerDisplay();
+            }
+        };
+        
+        // Initial setup
+        function initial() {
+            questionCount = 0;
+            scoreCount = 0;
+            count = 11;
+            clearInterval(countdown);
+            timerDisplay();
+            quizDisplay();
+        }
+        
+        // When user clicks on start button
+        startButton.addEventListener("click", () => {
+            startScreen.classList.add("hide");
+            displayContainer.classList.remove("hide");
+            initial();
+        });
+        
+        // Hide quiz and display start screen
+        window.onload = () => {
+            startScreen.classList.remove("hide");
+            displayContainer.classList.add("hide");
+        };
+
+        </script>
+</body>
+</html>

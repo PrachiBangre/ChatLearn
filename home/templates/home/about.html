@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About ChatLearn</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f2f1f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      width: 90%;
+      max-width: 900px;
+      padding: 90px;
+      background-color: rgba(52, 33, 33, 0.1); /* Semi-transparent white */
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(114, 54, 54, 0.1); /* Soft shadow */
+      display: flex;
+      flex-direction: row-reverse; /* Reverse direction for image */
+    }
+    .container img.about-image {
+      width: 300px;
+      height: auto;
+      border-radius: 20px; /* Rounded corners for image */
+      margin-right: 20px;
+      box-shadow: 0 0 20px rgba(76, 59, 59, 0.3); /* Soft shadow for image */
+    }
+    .content {
+      flex-grow: 1;
+      text-align: left;
+    }
+    .text {
+    text-align: justify;
+    }
+    h1 {
+      color: #0c0b0b;
+      margin-top: 0;
+    }
+    p {
+      text-size-adjust: 90px;
+      color: #0c0c0c;
+    }
+    #back-button {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 9999;
+}
+
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="content">
+      <h1>About Us</h1>
+      <p class="text">ChatLearn is an innovative language learning platform designed to elevate your vocabulary, pronunciation, and grammar skills. Whether you're a beginner or an advanced learner, ChatLearn offers a suite of dynamic features tailored to enhance your language proficiency. At ChatLearn, we believe in making language learning accessible, engaging, and effective. Join us today and embark on a rewarding journey towards mastering your desired language.</p>
+    </div>
+  <script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+<button id="back-button" onclick="goBack()"><a href ="{%url 'home'%}">Back</a></button>
+</body>
+</html>

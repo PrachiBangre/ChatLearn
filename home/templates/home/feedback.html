@@ -1,0 +1,169 @@
+
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Comment Form</title>
+            <style>
+                /* Your CSS styles */
+                body {
+                    font-family: Arial, sans-serif;
+                    text-align: center;
+                    margin: 0;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 100vh;
+                    background-color: #302d42; /* Background color */
+                }
+        
+                form {
+                    background-color: rgba(255, 255, 255, 0.15);
+                    padding: 5%;
+                    border-radius: 10px;
+                    backdrop-filter: blur(10px);
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+                    max-width: 400px; /* Adjusted */
+                    width: 100%; /* Adjusted */
+                }
+        
+                textarea {
+                    background-color: transparent;
+                    width: 90%;
+                    height: 100px;
+                    padding: 8px;
+                    box-sizing: border-box;
+                    margin-bottom: 16px;
+                    resize: vertical;
+                    color: black;
+                    border: 1px solid black;
+                    border-radius: 4px;
+                    outline: none;
+                }
+        
+                textarea::placeholder {
+                    text-align: center;
+                    color: black;
+                }
+        
+                button {
+                    background-color: #302d42;
+                    color: white;
+                    padding: 10px 15px;
+                    border: none;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    width: 100%; /* Adjusted */
+                    max-width: 200px; /* Adjusted */
+                    margin: 0 auto; /* Center button */
+                }
+        
+                button:hover {
+                    background-color: green;
+                }
+        
+                label {
+                    color: white;
+                    font-size: 20px;
+                    font-family: Arial, sans-serif;
+                    font-weight: bold;
+                }
+        
+                .popup {
+                    display: none;
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background-color: rgba(0, 0, 0, 0.7);
+                    width: 300px;
+                    padding: 20px;
+                    text-align: center;
+                    border-radius: 10px;
+                    color: white;
+                    z-index: 999;
+                }
+        
+                .popup-content {
+                    position: relative;
+                }
+        
+                .close {
+                    position: absolute;
+                    top: 10px;
+                    right: 10px;
+                    color: white;
+                    cursor: pointer;
+                }
+        
+                #back-button {
+                    position: absolute;
+                    top: 10px;
+                    left: 10px;
+                    z-index: 999;
+                }
+            </style>
+        </head>
+        <body>
+            <form id="feedbackForm" method="post">
+                <label for="comment">Feedback</label>
+                <textarea id="comment" name="comment" placeholder="Add Comment" required></textarea>
+                <div class="button" onclick="submitForm()" onkeydown="handleButtonKey(event)" tabindex="0" role="button">Submit</div>
+            </form>
+        
+            <div class="popup" id="popup">
+                <div class="popup-content">
+                    <span class="close" onclick="closePopup()" tabindex="0" role="button"> &times; </span>
+                    <p>Feedback sent successfully!</p>
+                </div>
+            </div>
+        
+            <script>
+                function submitForm() {
+                    var form = document.getElementById('feedbackForm');
+                    var formData = new FormData(form);
+        
+                    fetch(form.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        }
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            showPopup();
+                        } else {
+                            console.error('Failed to submit form');
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+                }
+        
+                function handleButtonKey(event) {
+                    if (event.keyCode === 13 || event.keyCode === 32) { // Enter or Space key
+                        submitForm();
+                    }
+                }
+        
+                function showPopup() {
+                    var popup = document.getElementById('popup');
+                    popup.style.display = 'block';
+                }
+        
+                function closePopup() {
+                    var popup = document.getElementById('popup');
+                    popup.style.display = 'none';
+                    document.getElementById('comment').value = ''; // Clear the text area
+                }
+        
+                function goBack() {
+                    window.history.back();
+                }
+            </script>
+        
+            <button id="back-button" onclick="goBack()" tabindex="0">Back</button>
+        </body>
+        </html>
+        

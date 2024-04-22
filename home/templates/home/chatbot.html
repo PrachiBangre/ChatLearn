@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Learning Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center; /* Center align all content */
+        }
+        
+        h1 {
+            margin-top: 0; /* Remove default margin */
+        }
+        
+        .input-field {
+            width: calc(100% - 22px); /* Adjusted width to account for padding and border */
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+            display: block;
+            margin: 10px auto; /* Center align and add margin */
+            text-align: center; /* Center text */
+        }
+        
+        .submit-btn {
+            margin-top: 10px; /* Added margin-top */
+            padding: 10px;
+            background-color: #2b4925;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: calc(100% - 22px); /* Adjusted width to account for padding and border */
+            font-size: 16px;
+            display: block;
+            margin: 10px auto; /* Center align and add margin */
+            text-align: center; /* Center text */
+        }
+        
+        .output-text {
+            width: calc(100% - 22px); /* Adjusted width to account for padding and border */
+            margin-top: 10px; /* Added margin-top */
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            resize: none;
+            font-size: 16px;
+            display: block;
+            margin: 10px auto; /* Center align and add margin */
+            text-align: center; /* Center text */
+        }
+    #back-button {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        z-index: 9999;
+    }
+</style>
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+</head>
+<body>
+    <button id="back-button" onclick="goBack()"><a href = "{%url 'home'%}">Back</a></button>
+    <div class="container">
+        <h1>English Learning Chatbot</h1>
+        <form method="post" id="chatbot-form" action="/chatbot/"> <!-- Ensure the form sends a POST request to /chatbot/ -->
+            {% csrf_token %}
+            <label for="choice">Choose an option:</label>
+            <select id="choice" name="choice" class="input-field"> <!-- Added class for styling -->
+                <option value="1">Pronounce my word</option>
+                <option value="2">Get the meaning of a word</option>
+                <option value="3">Get synonyms of a word</option>
+                <option value="4">Get antonyms of a word</option>
+                <option value="5">Generate a random word</option>
+                <option value="6">Get examples of word usage</option>
+                <option value="7">Get related words</option>
+                <option value="8">Get hypernyms of a word</option>
+                <option value="9">Exit</option>
+            </select>
+            <input type="text" id="word" name="word" placeholder="Enter the word" class="input-field"> <!-- Added class for styling -->
+            <button type="submit" class="submit-btn">Submit</button>
+        </form>
+        <div id="response" class="output-text">
+            {% if message %}
+                {{ message }}
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
