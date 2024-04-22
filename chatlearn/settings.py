@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-nxir85fiyl)l&ubgd3zyecj3^%o5slixjedouiq=3qe6x&@f8p
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["chatleatn.on.render.com", "localhost", ""]
 
 
 # Application definition
