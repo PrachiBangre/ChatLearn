@@ -61,7 +61,7 @@ def signin(request):
         if user is not None:
             login(request, user)
             messages.success(request, 'Successfully Signed In.')
-            return redirect('/index/')  # Replace 'home' with the name of your home page URL
+            return redirect('/index/ ')  # Replace 'home' with the name of your home page URL
         else:
             messages.error(request, 'Invalid email or password.')
     return render(request, 'home/signin.html')
@@ -153,7 +153,7 @@ def chatbot(request):
             message = f"Random word: {random_word}"
         elif choice == '6':
             examples = get_word_examples(word)
-            message = f"Examples of '{word}':\n- {'\n- '.join(examples)}"
+            message = f"Examples of '{word}':/n- {'\n- '.join(examples)}"
         elif choice == '7':
             related_words = get_related_words(word)
             message = f"Related words of '{word}': {', '.join(related_words)}"
