@@ -153,7 +153,7 @@ def chatbot(request):
             message = f"Random word: {random_word}"
         elif choice == '6':
             examples = get_word_examples(word)
-            message = f"Examples of '{word}':/n- {'\n- '.join(examples)}"
+            message = f"Examples of '{word}':{'- '.join(examples)}"
         elif choice == '7':
             related_words = get_related_words(word)
             message = f"Related words of '{word}': {', '.join(related_words)}"
