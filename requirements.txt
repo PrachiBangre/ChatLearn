@@ -4,3 +4,4 @@ psycopg
 nltk
 pyttsx3
 textblob
+Django-Gtts

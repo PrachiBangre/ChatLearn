@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from django.http import HttpResponse
+import nltk
 from nltk.corpus import wordnet
 import random
 import pyttsx3
@@ -153,7 +154,7 @@ def chatbot(request):
             message = f"Random word: {random_word}"
         elif choice == '6':
             examples = get_word_examples(word)
-            message = f"Examples of '{word}':{'- '.join(examples)}"
+            message = f"Examples of '{word}': {'\n- '.join(examples)}"
         elif choice == '7':
             related_words = get_related_words(word)
             message = f"Related words of '{word}': {', '.join(related_words)}"
