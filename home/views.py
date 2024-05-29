@@ -78,7 +78,12 @@ from django.shortcuts import render
 from django.http import JsonResponse
 import random
 import pyttsx3
+import nltk
 from nltk.corpus import wordnet
+
+# Ensure the necessary NLTK data files are downloaded
+nltk.download('wordnet')
+nltk.download('omw-1.4')
 
 # Define your word-related functions here
 def speak(text):
@@ -130,7 +135,6 @@ def get_word_examples(word):
     for synset in wordnet.synsets(word):
         examples.extend(synset.examples())
     return examples
-
 
 def chatbot(request):
     if request.method == 'POST':
@@ -208,10 +212,13 @@ def quiz(request):
 ###########################################################
 
 # views.py
-
 from django.shortcuts import render
 from nltk.corpus import wordnet
 import random
+
+# Ensure the necessary NLTK data files are downloaded
+import nltk
+nltk.download('wordnet')
 
 # Function to retrieve a random word from WordNet
 def get_random_word():
